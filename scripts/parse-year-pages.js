@@ -27,19 +27,39 @@ const months = [
 //  description: d
 // }
 
+function tagIsDate(str) {
+  const split = str.split(' ')
+  const isMonth = months.includes(split[0])
+  const isDate = !(isNaN(split[1]))
+  return isMonth && isDate
+}
+
 function getDeathObject({sel, year}) {
   const isPerson = !sel.find('ul').length
 
   if (isPerson) {
 
     const aTags = sel.find('a')
-
-    const isEmbedded = aTags.length === 3
+    const isEmbedded = tagIsDate(aTags.first().attr('title'))
     const nameIndex = isEmbedded ? 1 : 0
-
+/*
+    console.log('isEmbedded: ' + isEmbedded)
+    console.log('el 0: ' + aTags.eq(0).text())
+    console.log('el 1: ' + aTags.eq(1).text())
+    console.log('nameIndex: ' + nameIndex)
+*/
     // name
     const nameSel = aTags.eq(nameIndex)
-    const name = nameSel.text()
+    const nameText = nameSel.attr('title')
+
+    // remove descriptive info from name
+    let name = null
+    if(nameText.indexOf(',') === -1){
+      name = nameText
+    }
+    else {
+      name = nameText.substring(0, nameText.indexOf(','))
+    }
 
     // link
     const link = nameSel.attr('href')
@@ -97,7 +117,6 @@ function extractPeople(file) {
 
   // for each month
   for (i=0; i < months.length; i++) {
-
     // get month node
     const month_node = $(`#${months[i]}_2`).parent()
 
@@ -118,6 +137,7 @@ function extractPeople(file) {
 function init() {
   const files = fs.readdirSync(inputDir).filter(d => d.includes('.html'))
   const deathObjectList = [].concat(...files.map(extractPeople))
+  // console.log(deathObjectList)
   const csvFile = d3.csvFormat(deathObjectList)
 
   mkdirp('./output')

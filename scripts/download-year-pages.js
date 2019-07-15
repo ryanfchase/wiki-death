@@ -7,7 +7,7 @@ const outputDir = './output/year-pages'
 
 function download(year) {
   wiki()
-    .page('2018')
+    .page(year)
     .then(page => page.html() )
     .then(response => {
       fs.writeFileSync(`${outputDir}/${year}.html`, response)

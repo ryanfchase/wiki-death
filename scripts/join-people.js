@@ -18,14 +18,22 @@ function calculateTraffic({views, timestamp}) {
 function joinData(person) {
   const id = person.link.replace('/wiki/', '')
 
-  // TODO delete
-  console.log(id)
 
-  const personPageviewData = d3.csvParse(
-    fs.readFileSync(`./output/people-pageviews/${id}.csv`, 'utf-8')
-  )
+  let personPageviewData = null
 
-  console.log(personPageviewData)
+  try {
+    personPageviewData = d3.csvParse(
+      fs.readFileSync(`./output/people-pageviews/${id}.csv`, 'utf-8')
+    )
+  }
+  catch(err) {
+    console.error(err)
+    return
+  }
+
+  // TODO uncomment to view object
+  //console.log(personPageviewData)
+
   // person
   // name, link, YoB, YoD, DoD, description
 
@@ -47,7 +55,7 @@ function joinData(person) {
   })
 
   const output = d3.csvFormat(merged)
-  fs.writeFileSync(`${outputDir}/${id}.csv`, output
+  fs.writeFileSync(`${outputDir}/${id}.csv`, output)
 }
 
 function init() {
