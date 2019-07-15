@@ -2,6 +2,9 @@
 # Swp
 *.swp
 
+# Output
+ output/people-pageviews/*
+
 # Logs
 logs
 *.log
