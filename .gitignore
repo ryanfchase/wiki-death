@@ -1,9 +1,10 @@
 
 # Swp
 *.swp
+*.swo
 
 # Output
- ./output/people-pageviews/*.csv
+./output/people-pageviews/*.csv
 
 # Logs
 logs
