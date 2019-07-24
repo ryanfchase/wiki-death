@@ -42,12 +42,7 @@ function getDeathObject({sel, year}) {
     const aTags = sel.find('a')
     const isEmbedded = tagIsDate(aTags.first().attr('title'))
     const nameIndex = isEmbedded ? 1 : 0
-/*
-    console.log('isEmbedded: ' + isEmbedded)
-    console.log('el 0: ' + aTags.eq(0).text())
-    console.log('el 1: ' + aTags.eq(1).text())
-    console.log('nameIndex: ' + nameIndex)
-*/
+
     // name
     const nameSel = aTags.eq(nameIndex)
     const nameText = nameSel.attr('title')

@@ -7,17 +7,16 @@ const wikiPageviewData = d3.csvParse(
   fs.readFileSync('./output/wiki-pageviews.csv', 'utf-8')
 )
 
-function calculateTraffic({views, timestamp}) {
-  const match = wikiPageviewData.find(d => d.timestamp)
+function calculateTraffic({article, views, timestamp}) {
+  const match = wikiPageviewData.find(d => d.timestamp === timestamp)
 
   if (match) return views / match.views
-  console.error('no match', ppd)
+  console.error('no match', timestamp)
   return null
 }
 
 function joinData(person) {
   const id = person.link.replace('/wiki/', '')
-
 
   let personPageviewData = null
 
@@ -30,9 +29,6 @@ function joinData(person) {
     console.error(err)
     return
   }
-
-  // TODO uncomment to view object
-  //console.log(personPageviewData)
 
   // person
   // name, link, YoB, YoD, DoD, description
@@ -48,6 +44,7 @@ function joinData(person) {
 
   // Remove unecessary fields
   merged.forEach(d => {
+    delete d.project
     delete d.article
     delete d.granularity
     delete d.access
