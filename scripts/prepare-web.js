@@ -5,10 +5,11 @@ const ALL_DEATHS_PATH = './output/all-deaths-2015-2018.csv'
 const FILTERED_PATH = './output/filtered.csv'
 
 function getPageviews(person) {
+  const {pageid} = person
   const id = person.link.replace('/wiki', '')
   const data = d3.csvParse(`/output/people-pageviews/${id}.csv`, 'utf-8')
   const output = data.map(({ timestamp, views, percent_traffic }) => ({
-    link,
+    pageid,
     timestamp: timestamp.substring(0,8),
     views,
     percent_traffic: +percent_traffic.toFixed(8)

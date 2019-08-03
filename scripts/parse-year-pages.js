@@ -140,10 +140,3 @@ function init() {
 }
 
 init()
-
-// this didn't work because the cheerio object still returned metadata at the end *shrugs*
-  /*const cheerioObject = ul
-    .find('li')
-    .map((i, el) => getDeathObject({sel: $(el), year}))
-  const deathObjectList = Object.values(cheerioObject)
-  */

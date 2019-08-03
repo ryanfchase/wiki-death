@@ -10,7 +10,8 @@
     "get-wiki-pageviews": "node scripts/get-wiki-pageviews.js",
     "join-people": "node scripts/join-people.js",
     "explore": "node scripts/explore.js",
-    "filter-population": "node scripts/filter-population.js"
+    "filter-population": "node scripts/filter-population.js",
+    "add-details": "node scripts/add-details.js"
   },
   "keywords": [],
   "author": "",
