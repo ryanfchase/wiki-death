@@ -4,7 +4,7 @@
 *.swo
 
 # Output
-./output/people-pageviews/*.csv
+*.csv
 
 # Logs
 logs
