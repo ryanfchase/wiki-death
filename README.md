@@ -39,5 +39,3 @@ Gets more details info on each person
 
 ##### 9) `npm run prepare-web`
 Consolidates and optimizes data for web presentation
-
->>>>>>> Stashed changes

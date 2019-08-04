@@ -3,7 +3,7 @@ const mkdirp = require('mkdirp')
 const cheerio = require('cheerio')
 const d3 = require('d3')
 
-const inputDir = './output/year-pages'
+const INPUT_DIR = './output/year-pages'
 const months = [
   'January',
   'February',
@@ -20,13 +20,9 @@ const months = [
 ]
 
 // Return Object
-// {
-//  name: a,
-//  link: b,
-//  year_of_birth: c,
-//  description: d
-// }
+// { name, link, year_of_birth, description }
 
+// Helper function to determine if cheerio object contains an embedded date
 function tagIsDate(str) {
   const split = str.split(' ')
   const isMonth = months.includes(split[0])
@@ -34,11 +30,13 @@ function tagIsDate(str) {
   return isMonth && isDate
 }
 
+// Extract person-death objects from Cheerio selector, needs current year
 function getDeathObject({sel, year}) {
   const isPerson = !sel.find('ul').length
 
   if (isPerson) {
 
+    // Use link tags to determine if name is embedded
     const aTags = sel.find('a')
     const isEmbedded = tagIsDate(aTags.first().attr('title'))
     const nameIndex = isEmbedded ? 1 : 0
@@ -79,12 +77,13 @@ function getDeathObject({sel, year}) {
     // year_of_death
     const yearOfDeath = year
 
-    // description
+    // description is located after the comma adjacent to the name and before the open paren with subjects DoD
     const text = sel.text()
     const commaIndex = text.indexOf(',')
     const parenIndex = text.lastIndexOf('(')
     const description = text.substring(commaIndex + 1, parenIndex).trim()
 
+    // Return object will have {name, link, YoB, YoD, DoD, description}
     retObject = {
       'name': name,
       'link': link,
@@ -96,45 +95,48 @@ function getDeathObject({sel, year}) {
 
     return retObject
   }
-  else {
-    return null
-  }
+  // discard anything that doesn't contain a person
+  else { return null }
 }
 
+// main driver for parsing HTML
 function extractPeople(file) {
-  // html was downloaded in download-year-pages.js
-  const html = fs.readFileSync(`${inputDir}/${file}`, 'utf-8')
+
+  // open HTML for a specific year (e.g. 2015)
+  const html = fs.readFileSync(`${INPUT_DIR}/${file}`, 'utf-8')
   const $ = cheerio.load(html)
 
+  // prepare to store people in this list
   const year = file.replace('.html', '')
-
   const deathObjectList = []
 
   // for each month
   for (i=0; i < months.length; i++) {
+
     // get month node
-    const month_node = $(`#${months[i]}_2`).parent()
+    const monthNode = $(`#${months[i]}_2`).parent()
 
     // grab container of death list (only first one is relevant)
-    const list = month_node.nextAll('ul').eq(0)
+    const listNode = monthNode.nextAll('ul').eq(0)
 
     // push death objects to our deathObjectList
-    list.find('li').each((i, el) => {
+    listNode.find('li').each((i, el) => {
       const deathObject = getDeathObject({ sel: $(el), year })
       if (deathObject) deathObjectList.push(deathObject)
     })
   }
-
-  // console.log(deathObjectList) // it works!
-  return deathObjectList
+  return deathObjectList // console.log(deathObjectList) // it works!
 }
 
 function init() {
-  const files = fs.readdirSync(inputDir).filter(d => d.includes('.html'))
+  // 1. obtain all HTML files
+  const files = fs.readdirSync(INPUT_DIR).filter(d => d.includes('.html'))
+
+  // 2. run extractPeople() on each year, use d3 to format csv
   const deathObjectList = [].concat(...files.map(extractPeople))
-  // console.log(deathObjectList)
   const csvFile = d3.csvFormat(deathObjectList)
 
+  // 3. Write CSV data to file
   mkdirp('./output')
   fs.writeFileSync('./output/all-deaths-2015-2018.csv', csvFile)
 }

@@ -4,16 +4,18 @@ const d3 = require('d3')
 const outputDir = './output'
 
 function calculate(data) {
+  // data: {name, link, year_of_birth, year_of_death, date_of_death, description}
+
+  // obtain link, and underscore separated ID from link
   const link = data.link
   const id = link.replace('/wiki/', '')
-  let rawData = null
-  try {
-    rawData = d3.csvParse(fs.readFileSync(`./output/people-joined/${id}.csv`, 'utf-8'))
-  }
-  catch {
-    return null
-  }
 
+  // attempt to retrieve consolodated data from people-joined directory
+  let rawData = null
+  try { rawData = d3.csvParse(fs.readFileSync(`./output/people-joined/${id}.csv`, 'utf-8')) }
+  catch { return null }
+
+  // return an object of {name, link, YoB, YoD, DoD, desc, views, percent traffic}
   const dailyData = rawData.map(d => ({
     ...d,
     views: +d.views,
@@ -43,12 +45,18 @@ function calculate(data) {
 function init() {
   mkdirp(outputDir)
 
-  const csv_data = d3.csvParse(
+  // var csv_data
+  const all_deaths_data = d3.csvParse(
+    // We've decided the most useful base information for each person comes from this csv
     fs.readFileSync('./output/all-deaths-2015-2018.csv', 'utf-8')
   )
 
-  const len = csv_data.length
-  const explorationData = csv_data.map((data, i) => {
+  // prepare to visit each person from our all_deaths_data
+  const len = all_deaths_data.length
+
+  // loop through each person in all-deaths-2015-2018.csv
+  const explorationData = all_deaths_data.map((data, i) => {
+    // use calculate to explore the object
     console.log("exploring object " + (i + 1) + " of " + len)
     return calculate(data)
   })

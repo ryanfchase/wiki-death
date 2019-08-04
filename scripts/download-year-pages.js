@@ -5,6 +5,7 @@ const mkdirp = require('mkdirp')
 const years = [ '2015', '2016', '2017', '2018' ] 
 const outputDir = './output/year-pages'
 
+/* Use wikijs library to download wikipedia HTML deaths page for each year */
 function download(year) {
   wiki()
     .page(year)
