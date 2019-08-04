@@ -5,6 +5,7 @@
 
 # Output
 *.csv
+*.html
 
 # Logs
 logs
