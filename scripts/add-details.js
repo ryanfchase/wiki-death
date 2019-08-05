@@ -46,7 +46,7 @@ async function init() {
   }
 
   const output = d3.csvFormat(withDetails)
-  fs.writeFileSync(`${OUTPUT_DIR}/details.csv`)
+  fs.writeFileSync(`${OUTPUT_DIR}/details.csv`, output)
 }
 
 init()
