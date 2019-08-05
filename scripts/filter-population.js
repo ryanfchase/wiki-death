@@ -18,9 +18,11 @@ function clean(data) {
 function init() {
   mkdirp(outputDir)
 
-  const data = d3.csvParse(
-    fs.readFileSync('./output/explore.csv', 'utf-8')
-  )
+  const data = clean(
+    d3.csvParse(
+      fs.readFileSync(
+        './output/explore.csv', 'utf-8'
+      )))
 
   //pageviews --  results (rows)
   //100k      --  256

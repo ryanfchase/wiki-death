@@ -26,20 +26,20 @@ function calculate(data) {
   const medianPercentTraffic = d3.median(dailyData, d => d.percent_traffic)
   const maxViews = d3.max(dailyData, d => d.views)
   const maxPercentTraffic = d3.max(dailyData, d => d.percent_traffic)
-  const maxChangeViews = max_views / median_views
+  const maxChangeViews = maxViews / medianViews
   const maxChangePercentTraffic = maxPercentTraffic / medianPercentTraffic
 
-  return { 
+  // Return exploratory data
+  return {
     'id': id,
-    'median_views': medianViews, 
+    'median_views': medianViews,
     'median_percent_traffic': medianPercentTraffic,
     'max_views': maxViews,
     'max_percent_traffic': maxPercentTraffic,
     'max_change_views': maxChangeViews,
     'max_change_percent_traffic': maxChangePercentTraffic,
-    'link': link, 
+    'link': link,
   }
-
 }
 
 function init() {
