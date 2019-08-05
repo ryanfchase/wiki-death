@@ -2,7 +2,7 @@ const fs = require('fs')
 const mkdirp = require('mkdirp')
 const d3 = require('d3')
 const ALL_DEATHS_PATH = './output/all-deaths-2015-2018.csv'
-const FILTERED_PATH = './output/filtered.csv'
+const FILTERED_PATH = './output/details.csv' /* NOTE: using this instead of filtered.csv */
 const OUTPUT_DIR = './web-data/'
 
 function getPageviews(person) {
