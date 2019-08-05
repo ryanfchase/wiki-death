@@ -17,7 +17,7 @@ function getPageviews(person) {
 
   // extract relevant data
   const output = joinedPersonData.map(({ link, timestamp, views, percent_traffic }) => ({
-    link,
+    pageid,
     timestamp: timestamp.substring(0, 8),
     views,
     percent_traffic: (percent_traffic * 1).toFixed(8)
