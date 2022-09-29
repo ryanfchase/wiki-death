@@ -19,7 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
-    "d3": "^5.9.7",
+    "d3": "^7.6.1",
     "mkdirp": "^0.5.1",
     "pageviews": "^1.4.2",
     "wikijs": "^5.5.0"
